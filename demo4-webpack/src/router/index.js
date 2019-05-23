@@ -11,12 +11,12 @@ export default new Router({
   // mode:'history',
   routes: [
     {
-      path: '/goods/:goodId',
+      path: '/goods',
       name: 'goods',
       components: {
         default: goods,
-        myTitle: hotTitle,
-        myImage: Image
+        a: hotTitle,
+        b: Image
       }
     },
     {
@@ -51,5 +51,6 @@ export default new Router({
       name: 'cart_parm',
       component: cart
     }
+
   ]
 })

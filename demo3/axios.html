@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!--这个文件必须在前面 -->
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script src="node_modules/axios/dist/axios.js"></script>
+
+</head>
+<body>
+<div id="app" class="container">
+  <h1>axios插件讲解</h1>
+  <a href="javascript:void(0)" class="btn btn-primary" @click="get()">GET请求</a>
+  <input class="btn btn-primary" type="button" @click="post()" value="POST请求">
+  <a href="javascript:void(0)" class="btn btn-primary" @click="http()">HTTP请求</a>
+  <div>
+    <span>{{msg}}</span>
+  </div>
+</div>
+<script>
+  new Vue({
+    el: "#app",
+    data: {
+      msg: ''
+    },
+    mounted: function () {
+      axios.interceptors.request.use(function (config) {
+        console.log("request init");
+        return config;
+      })
+      axios.interceptors.response.use(function (response) {
+        console.log("response init");
+        return response;
+      })
+    },
+    methods: {
+      get: function () {
+         axios.get("package.json",{
+           params: {
+             userId: '001'
+           },
+           headers: {
+             token: '122112'
+           }
+         }).then(res =>{
+           this.msg = res.data;
+         }).catch(function (error) {
+           console.log(error);
+         });
+      },
+      post: function () {
+        axios.post("package.json").then(res =>{
+          this.msg = res.data;
+        });
+      },
+      http: function () {
+        axios({
+          url: "package.json",
+          method:"get",
+          //post
+          data: {
+            userId: '001'
+          },
+          //get
+          params: {
+            userId: '001'
+          },
+          headers: {
+            token: '122112'
+          },
+          before:function () {
+            console.log("before")
+          }
+
+        }).then(res => {
+          this.msg = res.data;
+        }).catch(function (error) {
+          
+        })
+      }
+    }
+  })
+
+</script>
+</body>
+</html>
